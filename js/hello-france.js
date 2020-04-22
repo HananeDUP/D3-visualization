@@ -1,12 +1,10 @@
-const w = 800;
-const h = 800;
+const w = 600;
+const h = 600;
 let dataset = [];
 const histoWidth = 600;
 const histoHeigth = 200;
 const scalePop = 3000;
 const scaleDensity = 300;
-
-
 
 //Create SVG element
 let svg = d3.select("#map").append("svg").attr("width", w).attr("height", h);
@@ -19,18 +17,6 @@ var zoom = d3.zoom()
 var div = d3.select("#map").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-// let svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
-let svgG = svg.append("g") //A modifier
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + h + ")")
-
-// let valuecity = d3.svg.circle()
-//     .x(function (d) { return x(d.date); })
-//     .y(function (d) { return y(d.close); });
-
-// let path = svg.append("path")
-//     .attr("class", "data")
-//     .attr("d", (d) => { d.place });
 
 // let svgHisto = d3.select("body").append("svg").attr("width", histoWidth).attr("height", histoHeigth);
 
@@ -47,7 +33,7 @@ function drawMap() {
         // .attr("r", 1)
         // .attr("cx", (d) => x(d.longitude))
         // .attr("cy", (d) => y(d.latitude))
-        .attr("fill", (d) => myColor(d.density))
+        .attr("fill", (d) => myColor(d.population))
         .on("mouseover", function (d) {
             div.transition()
                 .duration(200)
@@ -69,7 +55,41 @@ function drawMap() {
                 .style("left", "-500px")
                 .style("top", "-500px");
         });
-    svgG.call(d3.axisBottom(x)); //a modifier
+
+    xAxis = d3.axisTop(x).ticks(20);
+    // xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(10);
+    hx = h - 2
+    svg.append("g") //A modifier
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + hx + ")")
+        // .call(xAxis)
+        .call(d3.axisTop(x))
+    // text label for the x axis
+    svg.append("text")
+        .attr("transform",
+            "translate(" + (w / 2) + " ," +
+            (h - 30) + ")")
+        // .style("text-anchor", "middle")
+        .attr("fill", "blue")
+        .text("Longitude");
+
+
+    svg.append("g") //A modifier
+        .attr("class", "y axis")
+        // .attr("transform", "translate(" + w - 10 + ",0)")
+        // .call(d3.axisLeft(y))
+        .call(d3.axisRight(y))
+
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 25)
+        .attr("x", 0 - (h / 2))
+        .attr("dy", "1em")
+        .attr("fill", "blue")
+        // .style("text-anchor", "middle")
+        // .style("color", "blue")
+        .text("Latitude");
+
     svg.call(zoom)
 };
 
@@ -85,16 +105,6 @@ function drawMap() {
 //     svgG.call(d3.axisBottom(x));
 // };
 
-// var tooltip = d3.select("#map")
-//     .append("div")
-//     .style("position", "absolute")
-//     .style("visibility", "hidden")
-//     .text("I'm a circle!");
-
-// d3.select("#code_1230")
-//     .on("mouseover", () => tooltip.style("visibility", "visible"))
-//     .on("mousemove", () => tooltip.style("top", (event.pageY - 800) + "px").style("left", (event.pageX - 800) + "px"))
-//     .on("mouseout", () => tooltip.style("visibility", "visible"));
 
 d3.tsv("data/france.tsv")
     .row((d, i) => {
@@ -115,19 +125,26 @@ d3.tsv("data/france.tsv")
             console.log("Last row: ", rows[rows.length - 1]);
             x = d3.scaleLinear()
                 .domain(d3.extent(rows, (row) => row.longitude))
+                // .domain([0, d3.max(rows, (row) => row.longitude)])
                 .range([0, w]);
+
+            xinv = d3.scaleLinear()
+                .domain(d3.extent(rows, (row) => row.longitude))
+                // .domain([0, d3.max(rows, (row) => row.longitude)])
+                .range([w, 0]);
 
             y = d3.scaleLinear()
                 .domain(d3.extent(rows, (row) => row.latitude))
+                // .domain([0, d3.max(rows, (row) => row.latitude)])
                 .range([h, 0]);
 
-            codePost = d3.scaleLinear()
-                .domain(d3.extent(rows, (row) => row.codePostal))
-                .range([h, 0]);
+            // codePost = d3.scaleLinear()
+            // .domain(d3.extent(rows, (row) => row.codePostal))
+            // .range([h, 0]);
 
             myColor = d3.scaleSequential()
                 // myColor = d3.scaleLinear()
-                .domain([1, scaleDensity])
+                .domain([1, scalePop])
                 // .domain(d3.extent(rows, (row) => row.population))
                 // .domain([1, d3.max(rows, row => +row.density)])
                 .interpolator(d3.interpolatePuRd);
@@ -144,29 +161,6 @@ d3.tsv("data/france.tsv")
             // yHisto = d3.scaleLinear()
             //     .domain([0, d3.max(bins, d => d.length)]).nice()
             //     .range([height - margin.bottom, margin.top])
-
-            // dataset.forEach(function (e, i) {
-            //     svg.selectAll("rect")
-            //         // .attr("class", d => "department q" + quantile(+e.POP) + "-9")
-            //         .on("mouseover", function (e) {
-            //             rect.transition()
-            //                 .duration(200)
-            //                 .style("opacity", .9);
-            //             rect.html("<b>City : </b>" + e.place + "<br>"
-            //                 + "<b>Population : </b>" + e.population + "<br>"
-            //                 + "<b>Density : </b>" + e.density + "<br>"
-            //                 + "<b>Postal Code : </b>" + e.codePostal + "<br>")
-            //                 .style("left", (d3.event.pageX) + "px")
-            //                 .style("top", (d3.event.pageY) + "px");
-            //         })
-            //         .on("mouseout", function (d) {
-            //             rect.style("opacity", 0);
-            //             rect.html("")
-            //                 .style("left", "-500px")
-            //                 .style("top", "-500px");
-            //         });
-            // });
-
         };
 
 
