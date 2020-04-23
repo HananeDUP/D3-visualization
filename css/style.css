@@ -11,3 +11,14 @@ div.tooltip {
     pointer-events: none;			
 }
 
+#citiesmap {
+    /* width: 500; */
+    /* height: 500; */
+    margin-right: 100px;
+}
+
+.code_post {
+    cursor: pointer;
+    /* stroke: black; */
+    stroke-width: .5px;
+}

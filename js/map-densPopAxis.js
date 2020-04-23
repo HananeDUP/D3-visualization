@@ -1,27 +1,62 @@
 const w = 600;
 const h = 600;
+const wg = 500;
+const hg = 500;
+
 let dataset = [];
+
 const histoWidth = 600;
 const histoHeigth = 200;
 const scalePop = 3000;
 const scaleDensity = 300;
 
-//Create SVG element
-let svg = d3.select("#mapDensityPop").append("svg").attr("width", w).attr("height", h);
+var selectedField = "density"
+var colorMap = "YlGnBu"
+const scaleMulti = 4
 
-// var zoom = d3.zoom()
-//     .on("zoom", function () {
-//         svg.attr("transform", d3.event.transform)
-//     })
+document.getElementById("select_pop_dens").onchange = function (e) {
+    selectedField = e.target.value
+    console.log("selectedField", selectedField)
+}
+
+if (selectedField == "population") {
+    colorMap = "YlGnBu"
+} else if (selectedField == "density") {
+    colorMap = "RdPu"
+}
+
+//Create SVG element
+let svg = d3.select("#mapDensityPop").append("svg")
+    .attr("width", w)
+    .attr("height", h)
+    // .attr("class", "Blues");
+    // .attr("class", "Greens");
+    // .attr("class", "YlGnBu"); //Jaune Vert Bleu
+    // .attr("class", "GnBu"); //Vert Bleu
+    .attr("class", colorMap); //Rouge Violet
+
+let cities = svg.append("g")
+    .attr('id', 'citiesmap')
+// .attr('transform', 'translate(50, 50)')
+// .attr("marginRight", 150);//.attr("width", wg - 200).attr("height", hg - 200);
+
+var zoom = d3.zoom()
+    .on("zoom", function () {
+        svg.attr("transform", d3.event.transform)
+    })
 
 var div = d3.select("#mapDensityPop").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+var legend = svg.append('g')
+    .attr('transform', 'translate(520, 250)')
+    .attr('id', 'legend');
+
 // let svgHisto = d3.select("body").append("svg").attr("width", histoWidth).attr("height", histoHeigth);
 
 function drawMap() {
-    svg.selectAll("rect")
+    cities.selectAll("rect")
         .data(dataset)
         .enter()
         .append("rect")
@@ -29,7 +64,10 @@ function drawMap() {
         .attr("height", 1)
         .attr("x", (d) => x(d.longitude))
         .attr("y", (d) => y(d.latitude))
-        .attr("fill", (d) => myColor(d.population))
+        // .attr("fill", (d) => myColor(d.population))
+        // .attr("id", (d) => "code_" + d.codePostal)
+        // .attr("class", d => "code_post q" + quantile(+d.population) + "-9")
+        .attr("class", d => "code_post q" + quantile(+d[selectedField]) + "-9")
         .on("mouseover", function (d) {
             div.transition()
                 .duration(200)
@@ -52,21 +90,18 @@ function drawMap() {
                 .style("top", "-500px");
         });
 
+    legend.selectAll('.colorbar')
+        .data(d3.range(9))
+        .enter().append('svg:rect')
+        .attr('y', d => d * 20 + 'px')
+        .attr('height', '20px')
+        .attr('width', '20px')
+        .attr('x', '0px')
+        .attr("class", d => "q" + d + "-9")
 
-    // svg.call(zoom)
+    svg.call(zoom)
+
 };
-
-// function drawHisto() {
-//     svgHisto.selectAll("rect")
-//         .data(dataset)
-//         .enter()
-//         .append("rect")
-//         .attr("width", 1)
-//         .attr("height", 1)
-//         .attr("x", (d) => x(d.longitude))
-//         .attr("y", (d) => y(d.latitude))
-//     svgG.call(d3.axisBottom(x));
-// };
 
 
 d3.tsv("data/france.tsv")
@@ -98,35 +133,34 @@ d3.tsv("data/france.tsv")
 
             y = d3.scaleLinear()
                 .domain(d3.extent(rows, (row) => row.latitude))
-                // .domain([0, d3.max(rows, (row) => row.latitude)])
                 .range([h, 0]);
 
-            // codePost = d3.scaleLinear()
-            // .domain(d3.extent(rows, (row) => row.codePostal))
-            // .range([h, 0]);
 
             myColor = d3.scaleSequential()
-                // myColor = d3.scaleLinear()
                 .domain([1, scalePop])
-                // .domain(d3.extent(rows, (row) => row.population))
-                // .domain([1, d3.max(rows, row => +row.density)])
                 .interpolator(d3.interpolatePuRd);
 
-            // myColor = d3.scaleOrdinal().domain(rows)
-            //     .range(d3.schemeSet3);
+            quantile = d3.scaleQuantile()
+                // .domain([0, d3.median(rows, (row) => row.population) + 5000])
+                .domain([0, d3.mean(rows, (row) => row[selectedField]) * scaleMulti])
+                .range(d3.range(9));
+
+            var legendScale = d3.scaleLinear()
+                // .domain(d3.extent(rows, (row) => row.population))
+                // .domain([0, d3.median(rows, (row) => row.population) + 5000])
+                .domain([0, d3.mean(rows, (row) => row[selectedField]) * scaleMulti])
+                // .domain(d3.extent(dataset, (d) => d.population))
+                .range([0, 9 * 20]);
+
+            console.log("domain min max", d3.median(rows, (row) => row.population), d3.mean(rows, (row) => row.population), d3.mean(rows, (row) => row.population) * scaleMulti)
+            console.log("domain min max", d3.median(rows, (row) => row[selectedField]), d3.mean(rows, (row) => row[selectedField]), d3.mean(rows, (row) => row[selectedField]) * scaleMulti)
 
             dataset = rows;
             drawMap()
+            svg.append("g")
+                .attr('transform', 'translate(545, 250)')
+                .call(d3.axisRight(legendScale).ticks(6));
 
-            // xHisto = d3.scaleLinear()
-            //     .domain(d3.extent(rows, (row) => row.population))//.nice()
-            //     .range([margin.left, width - margin.right])
-            // yHisto = d3.scaleLinear()
-            //     .domain([0, d3.max(bins, d => d.length)]).nice()
-            //     .range([height - margin.bottom, margin.top])
         };
-
-
-
 
     });

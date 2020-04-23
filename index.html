@@ -4,14 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello World</title>
-    <link rel="stylesheet" href="/css/style.css" />
     <script type="text/javascript" src="js/d3/d3.js"></script>
-
-</head>
+    <link rel="stylesheet" href="/css/style.css" />
+    <!-- <link rel="stylesheet" href="/css/style.css" /> -->
+    <link rel="stylesheet" href="https://www.datavis.fr/assets/lib/colorbrewer/colorbrewer.css" </head>
 
 <body>
     <div>
         <!-- <div id="map"></div> -->
+        <div>
+            <form>
+                <label for="pop_dens"> Choose: </label>
+                <select id="select_pop_dens">
+                    <option value="population"> population</option>
+                    <option value="density"> density</option>
+                </select>
+            </form>
+        </div>
         <div id="mapDensityPop"></div>
     </div>
 
