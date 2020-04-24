@@ -7,14 +7,16 @@
     <script type="text/javascript" src="js/d3/d3.js"></script>
     <link rel="stylesheet" href="/css/style.css" />
     <!-- <link rel="stylesheet" href="/css/style.css" /> -->
-    <link rel="stylesheet" href="https://www.datavis.fr/assets/lib/colorbrewer/colorbrewer.css" </head>
+    <link rel="stylesheet" href="https://www.datavis.fr/assets/lib/colorbrewer/colorbrewer.css" />
+
+</head>
 
 <body>
     <div>
-        <!-- <div id="map"></div> -->
+        <div id="map"></div>
         <div>
             <form>
-                <label for="pop_dens"> Choose: </label>
+                <label for="pop_dens"> Analysis by: </label>
                 <select id="select_pop_dens">
                     <option value="population"> population</option>
                     <option value="density"> density</option>
@@ -22,11 +24,28 @@
             </form>
         </div>
         <div id="mapDensityPop"></div>
+        <div id="histogramm">
+            <form>
+                <label for="field_pop_dens"> Analysis by: </label>
+                <select id="histo_select_field">
+                    <option value="population"> population</option>
+                    <option value="density"> density</option>
+                </select>
+            </form>
+            <div id="histo"></div>
+            <p>
+                <label># bins</label>
+                <input type="number" min="1" max="100" step="10" value="30" id="nBin">
+                <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
+            </p>
+        </div>
+
     </div>
 
     <!-- <script type="text/javascript" src="js/hello-france.js"></script> -->
     <script type="text/javascript" src="js/map_functions.js"></script>
     <script type="text/javascript" src="js/map-densPopAxis.js"></script>
+    <script type="text/javascript" src="js/histogram.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 

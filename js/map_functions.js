@@ -7,7 +7,7 @@ let mapDrawPopDensity = function (first_load, selectedField, scaleMulti, dataset
         scaleMulti = 1
     }
     svg.attr("class", colorMap)
-    console.log("after modif =", selectedField, colorMap, scaleMulti)
+    // console.log("after modif =", selectedField, colorMap, scaleMulti)
     drawMap(selectedField, scaleMulti, dataset, svg, cities, zoom, div, legendAxis)
 }
 
@@ -64,9 +64,9 @@ function drawMap(selectedField, scaleMulti, dataset, svg, cities, zoom, div, leg
             });
 
     } else {
-        console.log("in modified data")
+        // console.log("in modified data")
         dataset.forEach(function (e, i) {
-            console.log("#code_" + e.codePostal)
+            // console.log("#code_" + e.codePostal)
             d3.select("#code_" + e.codePostal)
                 .attr("class", e => "code_post q" + quantile(+e[selectedField]) + "-9")
         })

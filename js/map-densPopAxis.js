@@ -56,7 +56,7 @@ d3.tsv("data/france.tsv")
         };
     })
     .get((error, rows) => {
-        console.log("loaded " + rows.length + " rows");
+        // console.log("loaded " + rows.length + " rows");
         if (rows.length > 0) {
             dataset = rows;
             legend.selectAll('.colorbar')

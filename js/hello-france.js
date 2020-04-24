@@ -66,9 +66,7 @@ function drawMap() {
         .call(d3.axisTop(x))
     // text label for the x axis
     svg.append("text")
-        .attr("transform",
-            "translate(" + (w / 2) + " ," +
-            (h - 30) + ")")
+        .attr("transform", "translate(" + (w / 2) + " ," + (h - 30) + ")")
         // .style("text-anchor", "middle")
         .attr("fill", "blue")
         .text("Longitude");
