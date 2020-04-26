@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello World</title>
-    <script type="text/javascript" src="js/d3/d3.js"></script>
+    <!-- <script type="text/javascript" src="js/d3/d3.js"></script> -->
+    <script src="https://d3js.org/d3.v4.js"></script>
     <link rel="stylesheet" href="/css/style.css" />
-    <!-- <link rel="stylesheet" href="/css/style.css" /> -->
     <link rel="stylesheet" href="https://www.datavis.fr/assets/lib/colorbrewer/colorbrewer.css" />
 
 </head>
@@ -39,13 +39,30 @@
                 <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
             </p>
         </div>
+        <div id="histogram_brush">
+            <!-- <form>
+                <label for="field_pop_dens_brush"> Analysis by: </label>
+                <select id="histo_select_field_brush">
+                    <option value="population"> population</option>
+                    <option value="density"> density</option>
+                </select>
+            </form> -->
+            <div id="histo_brush"></div>
+            <!-- <p>
+                <label># bins</label>
+                <input type="number" min="1" max="100" step="10" value="30" id="nBin_brush">
+                <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
 
+        </div>
     </div>
 
     <!-- <script type="text/javascript" src="js/hello-france.js"></script> -->
-    <script type="text/javascript" src="js/map_functions.js"></script>
-    <script type="text/javascript" src="js/map-densPopAxis.js"></script>
-    <script type="text/javascript" src="js/histogram.js"></script>
+    <!-- <script type="text/javascript" src="js/map_functions.js"></script> -->
+    <!-- <script type="text/javascript" src="js/map-densPopAxis.js"></script> -->
+    <!-- <script type="text/javascript" src="js/histogram.js"></script> -->
+    <!-- <script type="text/javascript" src="js/histogram-brush.js"></script> -->
+    <!-- <script type="text/javascript" src="js/histogram-brush-standard.js"></script> -->
+    <script type="text/javascript" src="js/population-density-brush-standard.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
