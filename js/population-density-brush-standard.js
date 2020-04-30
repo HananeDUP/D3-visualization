@@ -42,7 +42,7 @@ d3.tsv("data/france.tsv")
                 // .domain(d3.extent(rows, (row) => row.population))
                 .domain([0, maxPop])
                 .range([0, width]);
-
+            // var heightX = height + 5
             var xAxis = svgHistoBrush.append("g")
                 .attr("transform", "translate(0," + height + ")")
 
@@ -85,7 +85,10 @@ d3.tsv("data/france.tsv")
 
             var color = d3.scaleSequential()
                 .domain([1, maxPop])
-                .interpolator(d3.interpolatePuRd);
+                .interpolator(d3.interpolateYlGnBu);
+            // .interpolator(d3.interpolatePuBu);
+            // .interpolator(d3.interpolateRgb("yellow", "green"));
+            // .interpolator(d3.interpolatePuRd)
 
             quantile = d3.scaleQuantile()
                 // .domain([0, d3.median(rows, (row) => row.population) + 5000])
@@ -164,6 +167,8 @@ d3.tsv("data/france.tsv")
                     brush_elm.dispatchEvent(new_click_event);
                 });
 
+
+
             var idleTimeout
             function idled() { idleTimeout = null; }
 
@@ -175,33 +180,35 @@ d3.tsv("data/france.tsv")
                     if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
                     x.domain([0, maxPop])
                     y.domain([0, maxDensity])
+
                 } else {
                     console.log("extent", extent)
-                    // console.log("extent[0][0]", extent[0][0], x.invert(extent[0][0]))
-                    // console.log("extent[0][1]", extent[1][0], x.invert(extent[1][0]))
-                    // console.log("extent[1][0]", extent[0][1], y.invert(extent[0][1]))
-                    // console.log("extent[1][1]", extent[1][1], y.invert(extent[1][1]))
                     x.domain([x.invert(extent[0][0]), x.invert(extent[1][0])])
                     y.domain([y.invert(extent[1][1]), y.invert(extent[0][1])])
-                    var startColor = x.invert(extent[0][0]) + 20000
-                    plot.classed("selected", (d) => isBrushed(extent, x(d.population), y(d.density)))
-                    // .attr("fill", "green")
-                    // color.domain([startColor, x.invert(extent[1][0])]).interpolator(d3.interpolatePuRd);
+                    // var startColor = x.invert(extent[0][0]) + 20000
+                    var startColor = 1
+                    // plot.classed("selected", (d) => isBrushed(extent, x(d.population), y(d.density)))
+                    color.domain([startColor, x.invert(extent[1][0])]).interpolator(d3.interpolatePuRd);
                     scatter.select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
                 }
 
                 // Update axis and circle position
-                xAxis.transition().duration(1000).call(d3.axisBottom(x))
+                xAxis.transition().duration(1000).call(d3.axisBottom(x).ticks(8))
+
                 yAxis.transition().duration(1000).call(d3.axisLeft(y))
+
                 scatter
                     .selectAll("circle")
                     .transition().duration(1000)
                     .attr("cx", (d) => x(d.population))
                     .attr("cy", (d) => y(d.density))
                     .style("fill", (d) => color(d.population))
-                // color.domain([1, maxPop]).interpolator(d3.interpolatePuRd);
+                color.domain([1, maxPop]).interpolator(d3.interpolateYlGnBu);
             }
 
+            xAxis.call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "rotate(0)")
             // A function that return TRUE or FALSE according if a dot is in the selection or not
             function isBrushed(brush_coords, cx, cy) {
                 var x0 = brush_coords[0][0],
