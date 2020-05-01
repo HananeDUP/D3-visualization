@@ -3,24 +3,24 @@ let maxDensity = 20000
 let selectField = 'population'
 
 var margin = { top: 10, right: 30, bottom: 30, left: 40 },
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom
+    wScatter = w - 100 - margin.left - margin.right,
+    hScatter = h - 160 - margin.top - margin.bottom
 
 //Create SVG element
-let svgHistoBrush = d3.select("#histo_brush")
+let svgScatterBrush = d3.select("#scatter_brush")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom + 20)
+    .attr("width", wScatter + margin.left + margin.right)
+    .attr("height", hScatter + margin.top + margin.bottom + 20)
     .append("g")
     .attr("transform", "translate(50," + margin.top + ")");
 
-var div = d3.select("#histo_brush").append("div")
+var divScatter = d3.select("#scatter_brush").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
 // var zoom = d3.zoom()
 //     .on("zoom", function () {
-//         svgHisto.attr("transform", d3.event.transform)
+//         svgScatterBrush.attr("transform", d3.event.transform)
 //     })
 
 d3.tsv("data/france.tsv")
@@ -41,45 +41,47 @@ d3.tsv("data/france.tsv")
             var x = d3.scaleLinear()
                 // .domain(d3.extent(rows, (row) => row.population))
                 .domain([0, maxPop])
-                .range([0, width]);
+                .range([0, wScatter]);
             // var heightX = height + 5
-            var xAxis = svgHistoBrush.append("g")
-                .attr("transform", "translate(0," + height + ")")
+            var xAxis = svgScatterBrush.append("g")
+                .attr("transform", "translate(0," + hScatter + ")")
 
             xAxis.call(d3.axisBottom(x));
 
-            var titleX = svgHistoBrush.append("text")
-                .attr("transform", "translate(" + (width / 2) + " ," + (height + 30) + ")")
+            var titleX = svgScatterBrush.append("text")
+                .attr("transform", "translate(" + (wScatter / 2) + " ," + (hScatter + 30) + ")")
                 // .style("text-anchor", "middle")
-                .attr("fill", "blue")
+                .attr("fill", "darksalmon")
 
-            titleX.text("population");
+
+            titleX.text("Population")
+                .attr("font-weight", "bold");
 
             var y = d3.scaleLinear()
                 // .domain(d3.extent(rows, (row) => row.density))
                 .domain([0, maxDensity])
-                .range([height, 0]);
+                .range([hScatter, 0]);
 
-            var yAxis = svgHistoBrush.append("g")
+            var yAxis = svgScatterBrush.append("g")
 
             yAxis.call(d3.axisLeft(y));
 
-            svgHistoBrush.append("text")
+            svgScatterBrush.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", -55)
-                .attr("x", 0 - (height / 2))
+                .attr("x", 0 - (hScatter / 2))
                 .attr("dy", "1em")
-                .attr("fill", "blue")
-                // .style("text-anchor", "middle")
-                // .style("color", "blue")SS
-                .text("density");
+                .attr("fill", "darksalmon")
+                .attr("font-weight", "bold")
+                .style("text-anchor", "middle")
+                .text("Density");
 
             // Add a clipPath: everything out of this area won't be drawn.
-            var clip = svgHistoBrush.append("defs").append("svg:clipPath")
+            var clip = svgScatterBrush.append("defs").append("svg:clipPath")
                 .attr("id", "clip")
                 .append("svg:rect")
-                .attr("width", 460)
-                .attr("height", 360)
+                .attr("width", wScatter) //460
+                .attr("height", hScatter) //360
                 .attr("x", 0)
                 .attr("y", 0);
 
@@ -95,7 +97,7 @@ d3.tsv("data/france.tsv")
                 .domain([0, maxPop])
                 .range([2, 3, 4, 5, 6]);
 
-            var scatter = svgHistoBrush.append('g')
+            var scatter = svgScatterBrush.append('g')
                 .attr("clip-path", "url(#clip)")
 
             var brush = d3.brush()
@@ -116,10 +118,10 @@ d3.tsv("data/france.tsv")
                 .style("fill", (d) => color(d.population))
                 .style("opacity", 0.5)
                 .on("mouseover", function (d) {
-                    div.transition()
+                    divScatter.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    div.html("<b>City : </b>" + d.place + "<br>"
+                    divScatter.html("<b>City : </b>" + d.place + "<br>"
                         + "<b>Population : </b>" + d.population + "<br>"
                         + "<b>Density : </b>" + d.density + "<br>"
                         + "<b>Postal Code : </b>" + d.codePostal + "<br>")
@@ -129,18 +131,18 @@ d3.tsv("data/france.tsv")
                         .style("hight", 70)
                 })
                 .on("mouseout", function (d) {
-                    div.transition()
+                    divScatter.transition()
                         .duration(50)
                         .style("opacity", 0);
-                    div.html("")
+                    divScatter.html("")
                         .style("left", "-500px")
                         .style("top", "-500px");
                 });
 
             plot
                 .on('mousedown', function (e) {
-                    const brush_elm = svgHistoBrush.select('.brush > .overlay').node();
-                    const brush_selection = svgHistoBrush.select('.brush > .selection').node();
+                    const brush_elm = svgScatterBrush.select('.brush > .overlay').node();
+                    const brush_selection = svgScatterBrush.select('.brush > .selection').node();
                     const bbox = brush_selection.getBoundingClientRect();
                     if (brush_selection.style.display !== 'none'
                         && d3.event.pageX > bbox.left

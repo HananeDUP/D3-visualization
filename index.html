@@ -12,59 +12,84 @@
 </head>
 
 <body>
-    <div>
-        <div id="map"></div>
-        <div>
-            <form>
-                <label for="pop_dens"> Analysis by: </label>
-                <select id="select_pop_dens">
-                    <option value="population"> population</option>
-                    <option value="density"> density</option>
-                </select>
-            </form>
-        </div>
-        <div id="mapDensityPop"></div>
-        <div id="histogramm">
-            <form>
-                <label for="field_pop_dens"> Analysis by: </label>
-                <select id="histo_select_field">
-                    <option value="population"> population</option>
-                    <option value="density"> density</option>
-                </select>
-            </form>
-            <div id="histo"></div>
-            <p>
-                <label># bins</label>
-                <input type="number" min="1" max="100" step="10" value="30" id="nBin">
-                <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
-            </p>
-        </div>
-        <div id="histogram_brush">
-            <!-- <form>
-                <label for="field_pop_dens_brush"> Analysis by: </label>
-                <select id="histo_select_field_brush">
-                    <option value="population"> population</option>
-                    <option value="density"> density</option>
-                </select>
-            </form> -->
-            <div id="histo_brush"></div>
-            <!-- <p>
-                <label># bins</label>
-                <input type="number" min="1" max="100" step="10" value="30" id="nBin_brush">
-                <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
+    <div class="container">
+        <div class="containerMaps">
+            <div id="map1" class="graphs">
+                <h2>Standard Map</h2>
+                <p><i>Characteristics</i>: X Axis, Y Axis, Cities showed as circles with differnt sizes and colors,
+                    depending on the size of the population.
+                    Tooltips and Zoom</p>
+                <div id="map"></div>
+            </div>
 
+            <div id="map2" class="graphs">
+                <h2>Advanced Map</h2>
+                <p><i>Characteristics</i>: DrillDown to choose to show Population or Density. Colors and scale change
+                    depending on the metric has been choosen. Tooltips and Zomm</p>
+
+                <div>
+                    <form>
+                        <label for="pop_dens"> Analysis by: </label>
+                        <select id="select_pop_dens">
+                            <option value="population"> population</option>
+                            <option value="density"> density</option>
+                        </select>
+                    </form>
+                </div>
+                <div id="mapDensityPop"></div>
+            </div>
+        </div>
+        <div class="containerHistoScatter">
+            <div id="map3" class="graphs">
+                <h2>Histogram</h2>
+                <p><i>Characteristics</i>: In the top DrillDown to choose to show Population or Density. In the Bottom
+                    drilldown to choose the number of bins. The initial number of bin changes depending on the metric
+                    choosen.
+                </p>
+                <div class="labels">
+                    <div>
+                        <label for="field_pop_dens"> Analysis by: </label>
+                        <select id="histo_select_field">
+                            <option value="population"> population</option>
+                            <option value="density"> density</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label># bins</label>
+                        <input type="number" min="1" max="100" step="10" value="40" id="nBin">
+                        <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
+                    </div>
+                </div>
+                <div id="histo"></div>
+                <!-- <p>
+                    <label># bins</label>
+                    <input type="number" min="1" max="100" step="10" value="40" id="nBin">
+                    <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
+                <!-- </p> --> -->
+                <!-- </div> -->
+            </div>
+            <div id="map4" class="graphs">
+                <h2>Scatter</h2>
+                <p><i>Characteristics</i>: I perform a filter to exclude import population and density, to be able to
+                    have a clear graphs . Brush could be performed. It changes the X and Y axis and also the colors of
+                    circles
+
+                </p>
+                <div id="scatter_brush"></div>
+            </div>
         </div>
     </div>
 
-    <!-- <script type="text/javascript" src="js/hello-france.js"></script> -->
-    <!-- <script type="text/javascript" src="js/map_functions.js"></script> -->
-    <!-- <script type="text/javascript" src="js/map-densPopAxis.js"></script> -->
-    <!-- <script type="text/javascript" src="js/histogram.js"></script> -->
+
+    <script type="text/javascript" src="js/hello-france.js"></script>
+    <script type="text/javascript" src="js/map_functions.js"></script>
+    <script type="text/javascript" src="js/map-densPopAxis.js"></script>
+    <script type="text/javascript" src="js/histogram.js"></script>
     <!-- <script type="text/javascript" src="js/histogram-brush.js"></script> -->
     <!-- <script type="text/javascript" src="js/histogram-brush-standard.js"></script> -->
-    <script type="text/javascript" src="js/population-density-brush-standard.js"></script>
+    <script type="text/javascript" src="js/scatter-brush.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
 
 </body>
 

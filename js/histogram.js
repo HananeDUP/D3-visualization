@@ -4,17 +4,16 @@ let maxField = 100
 let nBin = 10
 
 var margin = { top: 10, right: 30, bottom: 30, left: 40 },
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom
+    wHisto = w - 100 - margin.left - margin.right,
+    hHisto = h - 200 - margin.top - margin.bottom
 
 //Create SVG element
 let svgHisto = d3.select("#histo")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom + 20)
+    .attr("width", wHisto + margin.left + margin.right)
+    .attr("height", hHisto + margin.top + margin.bottom + 20)
     .append("g")
     .attr("transform", "translate(50," + margin.top + ")");
-// "translate(" + margin.left + 10 + "," + margin.top + ")");
 
 // var zoom = d3.zoom()
 //     .on("zoom", function () {
@@ -37,30 +36,29 @@ d3.tsv("data/france.tsv")
         console.log("loaded " + rows.length + " rows");
         if (rows.length > 0) {
             var x = d3.scaleLinear()
-                .range([0, width]);
+                .range([0, wHisto]);
 
             var xAxis = svgHisto.append("g")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("transform", "translate(0," + hHisto + ")")
 
             var titleX = svgHisto.append("text")
-                .attr("transform", "translate(" + (width / 2) + " ," + (height + 30) + ")")
-                // .style("text-anchor", "middle")
-                .attr("fill", "blue")
+                .attr("transform", "translate(" + (wHisto / 2) + " ," + (hHisto + 30) + ")")
+                .attr("fill", "darksalmon")
+                .attr("font-weight", "bold")
 
             var y = d3.scaleLinear()
                 // .domain([0, d3.max(bins, (d) => d.length)])
-                .range([height, 0]);
+                .range([hHisto, 0]);
 
             var yAxis = svgHisto.append("g")
 
             svgHisto.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", -55)
-                .attr("x", 0 - (height / 2))
+                .attr("x", 0 - (hHisto / 2))
                 .attr("dy", "1em")
-                .attr("fill", "blue")
-                // .style("text-anchor", "middle")
-                // .style("color", "blue")
+                .attr("fill", "darksalmon")
+                .attr("font-weight", "bold")
                 .text("# of cities");
 
             function update(nBin) {
@@ -98,7 +96,7 @@ d3.tsv("data/france.tsv")
                     .attr("x", 1)
                     .attr("transform", (d) => "translate(" + x(d.x0) + "," + y(d.length) + ")")
                     .attr("width", (d) => (x(d.x1) - x(d.x0)))
-                    .attr("height", (d) => (height - y(d.length)))
+                    .attr("height", (d) => (hHisto - y(d.length)))
                     .style("fill", "#69b3a2")
 
                 // If less bar in the new histogram, I delete the ones not in use anymore

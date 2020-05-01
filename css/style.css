@@ -1,14 +1,20 @@
-div.tooltip {	
+.tooltip {	
     position: absolute;			
     text-align: justify;			
-    /* width: 300px;					 */
-    /* height: 100px;					 */
-    padding: 2px;				
+    /* width: 300px;					
+    height: 300px;					 */
+    padding: 10px;		
+    /* margin-bottom:4px;		 */
     font: 12px sans-serif;		
-    background: lightsteelblue;	
+    /* background: lightsteelblue;	 */
+    background: rgb(190, 238, 189);	
     border: 0px;		
     border-radius: 8px;			
     pointer-events: none;			
+}
+
+.tooltip b {
+    padding:4px;
 }
 
 #citiesmap {
@@ -27,5 +33,40 @@ div.tooltip {
     opacity: 1;
     stroke: black;
     stroke-width: 1px;
-    color:green;
+    color:rgb(4, 104, 4);
   }
+
+/* .containerMaps.graphs .containerHistoScatter.graphs{ */
+.graphs{
+    width:620px;
+    height: 500
+    /* height: 60%; */
+    /* display:inline-block; */
+    /* display:inline-flex; */
+    /* margin-left:20px; */
+  }
+
+
+
+.containerMaps {
+    display:inline-flex;
+  }
+
+  .containerHistoScatter{
+    display:inline-flex;
+  }
+
+h2{
+    margin-left:120px;
+}
+ 
+p {
+    font-size: 0.9em;
+ }
+
+form{
+    margin-left:60px;
+}
+.labels {
+    display:-webkit-inline-flex;
+}
