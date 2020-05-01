@@ -15,17 +15,21 @@
     <div class="container">
         <div class="containerMaps">
             <div id="map1" class="graphs">
-                <h2>Standard Map</h2>
+                <h2>Map Method 1</h2>
                 <p><i>Characteristics</i>: X Axis, Y Axis, Cities showed as circles with differnt sizes and colors,
                     depending on the size of the population.
-                    Tooltips and Zoom</p>
+                    Tooltips and Zoom. <br>
+                    <i>If the map is black, please try to run it again</i></p>
                 <div id="map"></div>
             </div>
 
             <div id="map2" class="graphs">
-                <h2>Advanced Map</h2>
-                <p><i>Characteristics</i>: DrillDown to choose to show Population or Density. Colors and scale change
-                    depending on the metric has been choosen. Tooltips and Zomm</p>
+                <h2>Map Methods 2</h2>
+                <p><i>Characteristics</i>: DrillDown to choose to show Population or Density. Circles, colors and scale
+                    change
+                    depending on the metric has been choosen. Tooltips and Zomm
+
+                </p>
 
                 <div>
                     <form>
@@ -54,22 +58,16 @@
                             <option value="density"> density</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="bins">
                         <label># bins</label>
                         <input type="number" min="1" max="100" step="10" value="40" id="nBin">
                         <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
                     </div>
                 </div>
                 <div id="histo"></div>
-                <!-- <p>
-                    <label># bins</label>
-                    <input type="number" min="1" max="100" step="10" value="40" id="nBin">
-                    <!-- <input type="number" min="1" max="100" step="10" id="nBin"> -->
-                <!-- </p> --> -->
-                <!-- </div> -->
             </div>
             <div id="map4" class="graphs">
-                <h2>Scatter</h2>
+                <h2>Scatter with brush</h2>
                 <p><i>Characteristics</i>: I perform a filter to exclude import population and density, to be able to
                     have a clear graphs . Brush could be performed. It changes the X and Y axis and also the colors of
                     circles

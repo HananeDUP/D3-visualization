@@ -1,10 +1,12 @@
 let mapDrawPopDensity = function (first_load, selectedField, scaleMulti, dataset, svg, cities, zoom, div, legendAxis) {
     if (selectedField == "population") {
         colorMap = "YlGnBu"
+        maxSizeRayon = 100000
 
     } else if (selectedField == "density") {
         colorMap = "RdPu"
         scaleMulti = 1
+        maxSizeRayon = 10000
     }
     svg.attr("class", colorMap)
     // console.log("after modif =", selectedField, colorMap, scaleMulti)
@@ -29,14 +31,23 @@ function drawMap(selectedField, scaleMulti, dataset, svg, cities, zoom, div, leg
             .domain(d3.extent(dataset, (row) => row.latitude))
             .range([h, 0]);
 
-        cities.selectAll("rect")
+        rayonSize = d3.scaleQuantile()
+            // .domain([0, d3.median(rows, (row) => row.population) + 5000])
+            .domain([0, maxSizeRayon])
+            .range([1, 2, 3, 6]);
+
+        cities.selectAll("circle")
             .data(dataset)
             .enter()
-            .append("rect")
-            .attr("width", 1)
-            .attr("height", 1)
-            .attr("x", (d) => x(d.longitude))
-            .attr("y", (d) => y(d.latitude))
+            .append("circle")
+            // .attr("width", 1)
+            // .attr("height", 1)
+            // .attr("x", (d) => x(d.longitude))
+            // .attr("y", (d) => y(d.latitude))
+            .attr("cx", (d) => x(d.longitude))
+            .attr("cy", (d) => y(d.latitude))
+            .attr("r", (d) => rayonSize(d.population))
+            // .attr("fill", (d) => myColor(d.population))
             // .attr("fill", (d) => myColor(d.population))
             .attr("id", (d) => "code_" + d.codePostal)
             // .attr("class", d => "code_post q" + quantile(+d.population) + "-9")

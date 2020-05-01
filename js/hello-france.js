@@ -33,7 +33,7 @@ d3.tsv("data/france.tsv")
         };
     })
     .get((error, rows) => {
-        console.log("loaded " + rows.length + " rows");
+        // console.log("loaded " + rows.length + " rows");
         if (rows.length > 0) {
             console.log("First row: ", rows[0]);
             console.log("Last row: ", rows[rows.length - 1]);
