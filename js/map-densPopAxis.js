@@ -24,13 +24,17 @@ var zoom = d3.zoom()
 var div = d3.select("#mapDensityPop").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-
+wLegend = w - 60
+hLegend = h - 300
 var legend = svgMap.append('g')
-    .attr('transform', 'translate(520, 250)')
+    // .attr('transform', 'translate(520, 250)')
+    .attr("transform", "translate(" + wLegend + ", " + hLegend + ")")
     .attr('id', 'legend');
 
+wLegendAx = wLegend + 25
 var legendAxis = svgMap.append("g")
-    .attr('transform', 'translate(545, 250)')
+    // .attr('transform', 'translate(545, 250)')
+    .attr('transform', "translate(" + wLegendAx + ", " + hLegend + ")")
 
 var first_load = 0
 

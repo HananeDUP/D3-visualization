@@ -1,5 +1,5 @@
-const w = 600;
-const h = 600;
+const w = 500;
+const h = 500;
 let dataset = [];
 const scalePop = 3000;
 const scaleDensity = 300;
@@ -60,13 +60,7 @@ d3.tsv("data/france.tsv")
             dataset = rows;
             drawMapStandardMap()
         };
-
-
-
-
     });
-
-
 
 function drawMapStandardMap() {
     svg.selectAll("circle")
@@ -120,7 +114,6 @@ function drawMapStandardMap() {
         .attr("fill", "darksalmon")
         .attr("font-weight", "bold")
         .text("Longitude");
-
 
     svg.append("g") //A modifier
         .attr("class", "y axis")
